@@ -1,0 +1,8 @@
+.field {
+    margin: 0px 400px;
+    border-radius: 15px;
+    border: 3px solid #5b6b81;
+    background-color: #e4eaf2;
+    display: inline-grid;
+    justify-content: center;
+}

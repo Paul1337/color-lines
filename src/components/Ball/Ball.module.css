@@ -1,0 +1,21 @@
+.ball {
+    border: 3px solid #5b6b81;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+}
+.red {
+    background-color: #c74246;
+}
+.green {
+    background-color: #9ec8a4;
+}
+.yellow {
+    background-color: #f2e9ac;
+}
+.blue {
+    background-color: #88c1f2;
+}
+.orange {
+    background-color: #d97904;
+}
