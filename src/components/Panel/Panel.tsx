@@ -1,5 +1,7 @@
-import { CSSProperties, useEffect, useRef, useState } from 'react';
+import { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
 import styles from './Panel.module.css';
+import { AppContext } from '../../App';
+import { buildStartMatrix } from '../../Model/useCases/buildStartMatrix/buildStartMatrix';
 
 interface IPanelProps {
     points: number;
@@ -14,6 +16,13 @@ const Panel = (props: IPanelProps) => {
         setLeftDivStyle({ width: btnRestartRef.current?.offsetWidth });
     }, []);
 
+    const context = useContext(AppContext);
+
+    const handleClick = () => {
+        context?.setMatrix(buildStartMatrix());
+        context?.setSelected(null);
+    };
+
     return (
         <div className={styles.panel}>
             <div style={leftEmptyDivStyle}></div>
@@ -21,7 +30,7 @@ const Panel = (props: IPanelProps) => {
                 <span className={styles.pointsLabel}>Очки:</span>
                 <span className={styles.pointsCount}>{props.points}</span>
             </div>
-            <button ref={btnRestartRef} className={styles.restartBtn}>
+            <button ref={btnRestartRef} className={styles.restartBtn} onClick={handleClick}>
                 Перезапустить
             </button>
         </div>

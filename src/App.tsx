@@ -1,40 +1,43 @@
 import Field from './components/Field/Field';
 import Panel from './components/Panel/Panel';
 import './App.css';
-import { useState } from 'react';
-import { IPoint, TMatrix } from './Model/model';
+import { createContext, useEffect, useState } from 'react';
+import { IPoint, TMatrix } from './Model/matrix/types';
+import { buildStartMatrix } from './Model/useCases/buildStartMatrix/buildStartMatrix';
+import { buildPath } from './Model/useCases/buildPath/buildPath';
 
-const StartBallsCount = 3;
-const Dimention = 8;
-const BallTypesCount = 5;
+export interface IAppContext {
+    setMatrix: (matrix: TMatrix) => void;
+    setSelected: (cell: IPoint | null) => void;
+}
 
-const mixMatrix = (matrix: TMatrix) => {
-    return matrix;
-};
-
-const buildStartMatrix = () => {
-    const matrix = new Array(Dimention).fill(new Array(Dimention).fill(null));
-    for (let i = 0; i < StartBallsCount; i++) {
-        const rowInd = Math.floor(i / Dimention);
-        const colInd = i % Dimention;
-        matrix[rowInd][colInd] = Math.floor(Math.random() * BallTypesCount);
-    }
-
-    mixMatrix(matrix);
-
-    return matrix;
-};
+export const AppContext = createContext<IAppContext | null>(null);
 
 const App = () => {
     const [matrix, setMatrix] = useState<TMatrix>(buildStartMatrix());
     const [score, setScore] = useState<number>(0);
     const [selected, setSelected] = useState<IPoint | null>(null);
 
+    const selectCell = (point: IPoint) => {
+        setSelected(point);
+    };
+
+    const contextValue = {
+        setMatrix,
+        setSelected,
+    };
+
+    useEffect(() => {
+        const path = buildPath();
+    }, []);
+
     return (
-        <div className='App'>
-            <Panel points={0} />
-            <Field matrix={matrix} />
-        </div>
+        <AppContext.Provider value={contextValue}>
+            <div className='App'>
+                <Panel points={0} />
+                <Field matrix={matrix} selected={selected} onCellSelect={selectCell} />
+            </div>
+        </AppContext.Provider>
     );
 };
 

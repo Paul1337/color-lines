@@ -1,10 +1,10 @@
 .cell {
-    border: 3px solid #5b6b81;
     background-color: #f8f4ee;
-    border-radius: 5px;
-    height: 100px;
-    width: 100px;
-    margin: 5px;
+
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+    padding: 1px;
     cursor: pointer;
     align-items: center;
     display: flex;

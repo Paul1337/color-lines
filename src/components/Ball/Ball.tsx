@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import styles from './Ball.module.css';
 
 interface IBallProps {
@@ -14,6 +14,8 @@ const ballTypeToClassMap = new Map<number, string>([
 ]);
 
 const Ball: FC<IBallProps> = ({ type }) => {
+    // const [position, setPosition] = useState();
+
     const typeClass = ballTypeToClassMap.get(type) as string;
     return <div className={styles.ball + ' ' + styles[typeClass]}></div>;
 };
