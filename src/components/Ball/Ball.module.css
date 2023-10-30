@@ -1,3 +1,35 @@
+/* @keyframes moveRightAnimation {
+    0% {
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(54px);
+    }
+}
+@keyframes moveLeftAnimation {
+    0% {
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(-54px);
+    }
+}
+@keyframes moveUpAnimation {
+    0% {
+        transform: translateY(0px);
+    }
+    100% {
+        transform: translateY(-54px);
+    }
+}
+@keyframes moveDownAnimation {
+    0% {
+        transform: translateY(0px);
+    }
+    100% {
+        transform: translateY(54px);
+    }
+} */
 .ball {
     border: 3px solid #5b6b81;
     border-radius: 50%;
@@ -19,3 +51,15 @@
 .orange {
     background-color: #d97904;
 }
+/* .moveRight {
+    animation: moveRightAnimation 0.3s linear 0s 1 normal forwards;
+}
+.moveLeft {
+    animation: moveLeftAnimation 0.3s linear 0s 1 normal forwards;
+}
+.moveUp {
+    animation: moveUpAnimation 0.3s linear 0s 1 normal forwards;
+}
+.moveDown {
+    animation: moveBottomAnimation 0.3s linear 0s 1 normal forwards;
+} */

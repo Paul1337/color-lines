@@ -1,6 +1,7 @@
 import styles from './Cell.module.css';
 import Ball from '../Ball/Ball';
 import { CSSProperties, FC } from 'react';
+import { EMovingDirection } from '../Ball/Ball';
 
 interface ICellProps {
     ballType?: number | null;
@@ -32,7 +33,27 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect }) => {
     }
     return (
         <div style={style} className={styles.cell} onClick={trySelect}>
-            {ballType != undefined && <Ball type={ballType} />}
+            {ballType != undefined && (
+                <Ball
+                    path={[
+                        EMovingDirection.Right,
+                        EMovingDirection.Down,
+                        EMovingDirection.Right,
+                        EMovingDirection.Right,
+                        EMovingDirection.Down,
+                        EMovingDirection.Down,
+                        EMovingDirection.Left,
+                        EMovingDirection.Right,
+                        EMovingDirection.Down,
+                        EMovingDirection.Right,
+                        EMovingDirection.Right,
+                        EMovingDirection.Down,
+                        EMovingDirection.Down,
+                        EMovingDirection.Left,
+                    ]}
+                    type={ballType}
+                />
+            )}
         </div>
     );
 };

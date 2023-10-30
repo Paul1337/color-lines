@@ -6,7 +6,8 @@
     align-content: center;
     justify-content: space-between;
     padding: 30px;
-    margin: 10px 400px;
+    margin: 10px auto;
+    /* width: 100%; */
 }
 .scoreCont {
     display: flex;
@@ -22,6 +23,7 @@
     font-weight: bold;
 }
 .restartBtn {
+    margin-left: 10px;
     font-size: 15px;
     background-color: #f2ede4;
     padding: 5px;
