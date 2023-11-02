@@ -1,9 +1,8 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import styles from './Ball.module.css';
 import classNames from 'classnames';
-import { useMovingDirection } from './useMovingDirection';
-import { config } from './config';
 import { usePath } from './usePath';
+import { useAnimation } from './useAnimation';
 
 export enum EMovingDirection {
     None,
@@ -17,7 +16,7 @@ interface IBallProps {
     path?: Array<EMovingDirection>;
 }
 
-const ballTypeToClassMap = new Map<number, string>([
+const mapBallTypeToClass = new Map<number, string>([
     [0, 'red'],
     [1, 'green'],
     [2, 'yellow'],
@@ -27,11 +26,8 @@ const ballTypeToClassMap = new Map<number, string>([
 
 const Ball: FC<IBallProps> = ({ type, path = [] }) => {
     const ballRef = useRef<HTMLDivElement | null>(null);
-    const setMovingDirection = useMovingDirection(ballRef);
-
-    usePath(path, setMovingDirection);
-
-    const typeClass = ballTypeToClassMap.get(type) as string;
+    usePath(path, ballRef);
+    const typeClass = mapBallTypeToClass.get(type) as string;
     return <div ref={ballRef} className={classNames(styles.ball, styles[typeClass])}></div>;
 };
 

@@ -1,4 +1,4 @@
 export const config = {
     MovingDelta: 54,
-    animationTime: 300,
+    animationTime: 200,
 };

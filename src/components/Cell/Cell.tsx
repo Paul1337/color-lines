@@ -36,20 +36,11 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect }) => {
             {ballType != undefined && (
                 <Ball
                     path={[
+                        EMovingDirection.Down,
+                        EMovingDirection.Down,
                         EMovingDirection.Right,
                         EMovingDirection.Down,
                         EMovingDirection.Right,
-                        EMovingDirection.Right,
-                        EMovingDirection.Down,
-                        EMovingDirection.Down,
-                        EMovingDirection.Left,
-                        EMovingDirection.Right,
-                        EMovingDirection.Down,
-                        EMovingDirection.Right,
-                        EMovingDirection.Right,
-                        EMovingDirection.Down,
-                        EMovingDirection.Down,
-                        EMovingDirection.Left,
                     ]}
                     type={ballType}
                 />

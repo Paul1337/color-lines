@@ -18,7 +18,7 @@ const Field = ({ matrix, selected, onCellSelect }: IFieldProps) => {
             {matrix.map((row, y) =>
                 row.map((el, x) => (
                     <Cell
-                        onSelect={() => onCellSelect && onCellSelect({ x, y })}
+                        onSelect={() => onCellSelect?.({ x, y })}
                         isSelected={comparePoints(selected, { x, y })}
                         key={y * row.length + x}
                         ballType={el}
