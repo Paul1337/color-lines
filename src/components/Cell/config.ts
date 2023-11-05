@@ -1,3 +1,3 @@
 export const config = {
-    animationTime: 200,
+    kBallSize: 0.9,
 };

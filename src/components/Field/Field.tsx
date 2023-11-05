@@ -1,6 +1,7 @@
 import { IPoint, TMatrix } from '../../Model/matrix/types';
 import Cell from '../Cell/Cell';
 import styles from './Field.module.css';
+import { config } from './config';
 
 interface IFieldProps {
     matrix: TMatrix;
@@ -18,6 +19,7 @@ const Field = ({ matrix, selected, onCellSelect }: IFieldProps) => {
             {matrix.map((row, y) =>
                 row.map((el, x) => (
                     <Cell
+                        size={config.cellSize}
                         onSelect={() => onCellSelect?.({ x, y })}
                         isSelected={comparePoints(selected, { x, y })}
                         key={y * row.length + x}

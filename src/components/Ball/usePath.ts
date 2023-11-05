@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import { EMovingDirection } from './Ball';
 import { config } from './config';
 import { TBallRef, useAnimation } from './useAnimation';
+interface IMovingParams {
+    movingDelta: number;
+}
 
-export const usePath = (path: Array<EMovingDirection>, ballRef: TBallRef) => {
+export const usePath = (path: Array<EMovingDirection>, ballRef: TBallRef, params: IMovingParams) => {
     const animate = useAnimation(ballRef);
     const [stage, setStage] = useState(0);
 
     const stageAnimation = () => {
         if (stage === path.length) return;
-        animate(path[stage]);
+        animate(path[stage], params.movingDelta);
         setTimeout(() => {
             setStage((stage) => stage + 1);
         }, config.animationTime);

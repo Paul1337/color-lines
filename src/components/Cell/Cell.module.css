@@ -1,8 +1,4 @@
 .cell {
-    background-color: #f8f4ee;
-
-    height: 50px;
-    width: 50px;
     border: 1px solid black;
     padding: 1px;
     cursor: pointer;

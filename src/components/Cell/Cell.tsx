@@ -2,15 +2,17 @@ import styles from './Cell.module.css';
 import Ball from '../Ball/Ball';
 import { CSSProperties, FC } from 'react';
 import { EMovingDirection } from '../Ball/Ball';
+import { config } from './config';
 
 interface ICellProps {
     ballType?: number | null;
     position: [number, number];
     isSelected: boolean;
     onSelect?: () => void;
+    size: number;
 }
 
-const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect }) => {
+const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect, size }) => {
     const [x, y] = position;
 
     const trySelect = () => {
@@ -22,6 +24,8 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect }) => {
     let style: CSSProperties = {
         gridColumnStart: x + 1,
         gridRowStart: y + 1,
+        width: size + 'px',
+        height: size + 'px',
     };
     if (isSelected) {
         style = {
@@ -35,6 +39,8 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect }) => {
         <div style={style} className={styles.cell} onClick={trySelect}>
             {ballType != undefined && (
                 <Ball
+                    movingDelta={size + 4}
+                    size={size * config.kBallSize}
                     path={[
                         EMovingDirection.Down,
                         EMovingDirection.Down,
