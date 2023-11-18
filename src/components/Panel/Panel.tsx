@@ -1,13 +1,15 @@
-import { CSSProperties, useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fieldActions } from '../../store/slices/field/fieldSlice';
 import styles from './Panel.module.css';
-import { AppContext } from '../../App';
-import { buildStartMatrix } from '../../Model/useCases/buildStartMatrix/buildStartMatrix';
 
 interface IPanelProps {
     points: number;
 }
 
 const Panel = (props: IPanelProps) => {
+    const dispatch = useDispatch();
+
     const btnRestartRef = useRef<HTMLButtonElement>(null);
     const [leftEmptyDivStyle, setLeftDivStyle] = useState({});
 
@@ -16,11 +18,8 @@ const Panel = (props: IPanelProps) => {
         setLeftDivStyle({ width: btnRestartRef.current?.offsetWidth });
     }, []);
 
-    const context = useContext(AppContext);
-
-    const handleClick = () => {
-        context?.setMatrix(buildStartMatrix());
-        context?.setSelected(null);
+    const handleRestartClick = () => {
+        dispatch(fieldActions.resetMatrix());
     };
 
     return (
@@ -30,7 +29,7 @@ const Panel = (props: IPanelProps) => {
                 <span className={styles.pointsLabel}>Очки:</span>
                 <span className={styles.pointsCount}>{props.points}</span>
             </div>
-            <button ref={btnRestartRef} className={styles.restartBtn} onClick={handleClick}>
+            <button ref={btnRestartRef} className={styles.restartBtn} onClick={handleRestartClick}>
                 Перезапустить
             </button>
         </div>

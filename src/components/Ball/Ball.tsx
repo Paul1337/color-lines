@@ -16,6 +16,7 @@ interface IBallProps {
     path?: Array<EMovingDirection>;
     size: number;
     movingDelta: number;
+    onPositionUpdate?: () => void;
 }
 
 const mapBallTypeToClass = new Map<number, string>([
@@ -26,10 +27,11 @@ const mapBallTypeToClass = new Map<number, string>([
     [4, 'orange'],
 ]);
 
-const Ball: FC<IBallProps> = ({ size, movingDelta, type, path = [] }) => {
+const Ball: FC<IBallProps> = ({ size, movingDelta, type, path = [], onPositionUpdate }) => {
     const ballRef = useRef<HTMLDivElement | null>(null);
     usePath(path, ballRef, {
         movingDelta,
+        onPositionUpdate,
     });
     const typeClass = mapBallTypeToClass.get(type) as string;
     const JSstyles: CSSProperties = {

@@ -6,21 +6,21 @@ import { config } from './config';
 interface IFieldProps {
     matrix: TMatrix;
     selected: IPoint | null;
-    onCellSelect?: (point: IPoint) => void;
+    onCellClick?: (point: IPoint) => void;
 }
 
 const comparePoints = (point1: IPoint | null, point2: IPoint) => {
     return point1 !== null && point1.x === point2.x && point1.y === point2.y;
 };
 
-const Field = ({ matrix, selected, onCellSelect }: IFieldProps) => {
+const Field = ({ matrix, selected, onCellClick }: IFieldProps) => {
     return (
         <div className={styles.field}>
             {matrix.map((row, y) =>
                 row.map((el, x) => (
                     <Cell
                         size={config.cellSize}
-                        onSelect={() => onCellSelect?.({ x, y })}
+                        onClick={() => onCellClick?.({ x, y })}
                         isSelected={comparePoints(selected, { x, y })}
                         key={y * row.length + x}
                         ballType={el}

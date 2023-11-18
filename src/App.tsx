@@ -3,8 +3,8 @@ import Panel from './components/Panel/Panel';
 import './App.css';
 import { createContext, useEffect, useState } from 'react';
 import { IPoint, TMatrix } from './Model/matrix/types';
-import { buildStartMatrix } from './Model/useCases/buildStartMatrix/buildStartMatrix';
-import { buildPath } from './Model/useCases/buildPath/buildPath';
+import { buildStartMatrix } from './store/useCases/buildStartMatrix/buildStartMatrix';
+import { buildPath } from './store/useCases/buildPath/buildPath';
 
 export interface IAppContext {
     setMatrix: (matrix: TMatrix) => void;
@@ -14,12 +14,18 @@ export interface IAppContext {
 export const AppContext = createContext<IAppContext | null>(null);
 
 const App = () => {
-    const [matrix, setMatrix] = useState<TMatrix>(buildStartMatrix());
+    const [matrix, setMatrix] = useState<TMatrix>(buildStartMatrix);
     const [score, setScore] = useState<number>(0);
     const [selected, setSelected] = useState<IPoint | null>(null);
 
-    const selectCell = (point: IPoint) => {
-        setSelected(point);
+    const handleCellClick = (point: IPoint) => {
+        if (matrix[point.y][point.x] !== null) {
+            setSelected(point);
+        } else {
+            if (selected) {
+                const path = buildPath(selected, point, matrix);
+            }
+        }
     };
 
     const contextValue = {
@@ -27,15 +33,11 @@ const App = () => {
         setSelected,
     };
 
-    useEffect(() => {
-        const path = buildPath();
-    }, []);
-
     return (
         <AppContext.Provider value={contextValue}>
             <div className='App'>
                 <Panel points={0} />
-                <Field matrix={matrix} selected={selected} onCellSelect={selectCell} />
+                <Field matrix={matrix} selected={selected} onCellClick={handleCellClick} />
             </div>
         </AppContext.Provider>
     );

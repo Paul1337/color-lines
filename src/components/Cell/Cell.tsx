@@ -1,25 +1,18 @@
 import styles from './Cell.module.css';
 import Ball from '../Ball/Ball';
 import { CSSProperties, FC } from 'react';
-import { EMovingDirection } from '../Ball/Ball';
 import { config } from './config';
 
 interface ICellProps {
     ballType?: number | null;
     position: [number, number];
     isSelected: boolean;
-    onSelect?: () => void;
+    onClick?: () => void;
     size: number;
 }
 
-const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect, size }) => {
+const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size }) => {
     const [x, y] = position;
-
-    const trySelect = () => {
-        if (ballType !== null) {
-            if (onSelect) onSelect();
-        }
-    };
 
     let style: CSSProperties = {
         gridColumnStart: x + 1,
@@ -36,20 +29,9 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onSelect, size }
         };
     }
     return (
-        <div style={style} className={styles.cell} onClick={trySelect}>
+        <div style={style} className={styles.cell} onClick={() => onClick?.()}>
             {ballType != undefined && (
-                <Ball
-                    movingDelta={size + 4}
-                    size={size * config.kBallSize}
-                    path={[
-                        EMovingDirection.Down,
-                        EMovingDirection.Down,
-                        EMovingDirection.Right,
-                        EMovingDirection.Down,
-                        EMovingDirection.Right,
-                    ]}
-                    type={ballType}
-                />
+                <Ball movingDelta={size + 4} size={size * config.kBallSize} type={ballType} />
             )}
         </div>
     );

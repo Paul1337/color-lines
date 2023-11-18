@@ -1,5 +1,5 @@
-import { BallTypesCount, Dimention, StartBallsCount } from '../../config';
-import { TMatrix } from '../../matrix/types';
+import { BallTypesCount, Dimention, StartBallsCount } from '../../../Model/config';
+import { TMatrix } from '../../slices/field/model';
 
 const mixMatrix = (matrix: TMatrix) => {
     for (let i = 0; i < Dimention; i++) {
@@ -16,14 +16,16 @@ const mixMatrix = (matrix: TMatrix) => {
 
 export const buildStartMatrix = () => {
     const matrix = new Array(Dimention);
-    for (let i = 0; i < Dimention; i++) matrix[i] = new Array(Dimention).fill(null);
+    for (let i = 0; i < Dimention; i++) {
+        matrix[i] = new Array(Dimention).fill(null);
+    }
     for (let i = 0; i < StartBallsCount; i++) {
         const rowInd = Math.floor(i / Dimention);
         const colInd = i % Dimention;
         matrix[rowInd][colInd] = Math.floor(Math.random() * BallTypesCount);
     }
 
-    // mixMatrix(matrix);
+    mixMatrix(matrix);
 
     return matrix;
 };
