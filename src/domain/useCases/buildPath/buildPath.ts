@@ -1,6 +1,6 @@
-import { EMovingDirection } from '../../../components/Ball/Ball';
-import { TMatrix } from '../../slices/field/model';
-import { IPoint } from '../../slices/moveBall/model';
+import { EMovingDirection } from '../../../ui/components/Ball/Ball';
+import { TMatrix } from '../../store/slices/field/model';
+import { IPoint } from '../../store/slices/moveBall/model';
 
 export const buildPath = (startPos: IPoint, endPos: IPoint, matrix?: TMatrix): EMovingDirection[] => {
     return [

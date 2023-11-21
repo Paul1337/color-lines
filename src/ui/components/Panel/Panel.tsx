@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fieldActions } from '../../store/slices/field/fieldSlice';
+import { fieldActions } from '../../../domain/store/slices/field/fieldSlice';
 import styles from './Panel.module.css';
 
 interface IPanelProps {

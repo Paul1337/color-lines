@@ -1,5 +1,5 @@
-import { BallTypesCount, Dimention, StartBallsCount } from '../../../Model/config';
-import { TMatrix } from '../../slices/field/model';
+import { BallTypesCount, Dimention, StartBallsCount } from '../../config/config';
+import { TMatrix } from '../../store/slices/field/model';
 
 const mixMatrix = (matrix: TMatrix) => {
     for (let i = 0; i < Dimention; i++) {
