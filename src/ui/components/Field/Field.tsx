@@ -22,12 +22,15 @@ const Field: FC<IFieldProps> = (props) => {
         } else {
             if (selected) {
                 const path = buildPath(selected, point, matrix);
-                dispatch(
-                    moveBallActions.setMovingBall({
-                        ballPos: selected,
-                        path,
-                    })
-                );
+                console.log(path);
+                if (path) {
+                    dispatch(
+                        moveBallActions.setMovingBall({
+                            ballPos: selected,
+                            path,
+                        })
+                    );
+                }
             }
         }
     };
