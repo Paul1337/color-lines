@@ -14,13 +14,14 @@ interface IFieldProps {}
 
 const Field: FC<IFieldProps> = (props) => {
     const { matrix, selected } = useSelector((state: RootState) => state.field);
+    const moveBallData = useSelector((state: RootState) => state.moveBall);
     const dispatch = useDispatch();
 
     const handleCellClick = (point: IPoint) => {
         if (matrix[point.y][point.x] !== null) {
             dispatch(fieldActions.setSelected(point));
         } else {
-            if (selected) {
+            if (selected && moveBallData.ballPos === null) {
                 const path = buildPath(selected, point, matrix);
                 console.log(path);
                 if (path) {

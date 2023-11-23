@@ -1,3 +1,4 @@
+import { comparePoints } from '../../../lib/comparePoints';
 import { EMovingDirection } from '../../../ui/components/Ball/Ball';
 import { getDirectionBetweenPoints } from '../../lib/getDirectionBetweenPoints';
 import { getBottomPoint, getLeftPoint, getRightPoint, getUpPoint } from '../../lib/getNeighborPoint';
@@ -25,7 +26,7 @@ export const buildPath = (startPos: IPoint, endPos: IPoint, matrix: TMatrix): TB
             x < matrix[0].length &&
             y >= 0 &&
             y < matrix.length &&
-            !matrix[y][x] &&
+            matrix[y][x] === null &&
             !visitedMatrix[y][x]
         );
     };
@@ -49,6 +50,10 @@ export const buildPath = (startPos: IPoint, endPos: IPoint, matrix: TMatrix): TB
     let allIterated = false;
     while (!allIterated) {
         const { canMoveUp, canMoveRight, canMoveDown, canMoveLeft } = getMovingInfo(currentPos);
+
+        if (comparePoints(currentPos, endPos)) {
+            break;
+        }
 
         const prevPos = { ...currentPos } as IPoint;
 
@@ -75,8 +80,8 @@ export const buildPath = (startPos: IPoint, endPos: IPoint, matrix: TMatrix): TB
             dirMatrix[currentPos.y][currentPos.x] = prevPos;
         }
     }
-    console.log(dirMatrix);
-    console.log(visitedMatrix);
+    // console.log(dirMatrix);
+    // console.log(visitedMatrix);
 
     if (!visitedMatrix[endPos.y][endPos.x]) {
         return null;
