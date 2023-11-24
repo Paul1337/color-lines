@@ -5,6 +5,7 @@ export interface IPoint {
     y: number;
 }
 export interface IMoveBallState {
-    ballPos: IPoint | null;
+    startPos: IPoint | null;
+    endPos: IPoint | null;
     path: EMovingDirection[];
 }

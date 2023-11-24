@@ -21,13 +21,14 @@ const Field: FC<IFieldProps> = (props) => {
         if (matrix[point.y][point.x] !== null) {
             dispatch(fieldActions.setSelected(point));
         } else {
-            if (selected && moveBallData.ballPos === null) {
+            if (selected && moveBallData.startPos === null) {
                 const path = buildPath(selected, point, matrix);
                 console.log(path);
                 if (path) {
                     dispatch(
                         moveBallActions.setMovingBall({
                             ballPos: selected,
+                            endPos: point,
                             path,
                         })
                     );

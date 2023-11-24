@@ -19,6 +19,11 @@ export const fieldSlice = createSlice({
         setSelected(state: IFieldState, action: PayloadAction<IPoint>) {
             state.selected = action.payload;
         },
+        moveMatrixBall(state: IFieldState, action: PayloadAction<{ startPos: IPoint; endPos: IPoint }>) {
+            const { startPos, endPos } = action.payload;
+            state.matrix[endPos.y][endPos.x] = state.matrix[startPos.y][startPos.x];
+            state.matrix[startPos.y][startPos.x] = null;
+        },
     },
 });
 

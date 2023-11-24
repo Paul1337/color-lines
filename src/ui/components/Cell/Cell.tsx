@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../domain/store/store';
 import { comparePoints } from '../../../lib/comparePoints';
 import { moveBallActions } from '../../../domain/store/slices/moveBall/moveBallSlice';
+import { fieldActions } from '../../../domain/store/slices/field/fieldSlice';
+import { IPoint } from '../../../domain/store/slices/moveBall/model';
 
 interface ICellProps {
     ballType?: number | null;
@@ -20,6 +22,13 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size })
     const dispatch = useDispatch();
 
     const handleBallPositionUpdate = () => {
+        console.log('handle ball position update');
+        dispatch(
+            fieldActions.moveMatrixBall({
+                startPos: movingBallData.startPos as IPoint,
+                endPos: movingBallData.endPos as IPoint,
+            })
+        );
         dispatch(moveBallActions.reset());
     };
 
@@ -44,7 +53,7 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size })
             {ballType != undefined && (
                 <Ball
                     onPositionUpdate={handleBallPositionUpdate}
-                    path={comparePoints(movingBallData.ballPos, { x, y }) ? movingBallData.path : []}
+                    path={comparePoints(movingBallData.startPos, { x, y }) ? movingBallData.path : []}
                     movingDelta={size + 4}
                     size={size * config.kBallSize}
                     type={ballType}

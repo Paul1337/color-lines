@@ -3,12 +3,14 @@ import { IMoveBallState, IPoint } from './model';
 import { EMovingDirection } from '../../../../ui/components/Ball/Ball';
 
 const initialState: IMoveBallState = {
-    ballPos: null,
+    startPos: null,
+    endPos: null,
     path: [],
 };
 
 interface ISetMovingBallPayload {
     ballPos: IPoint;
+    endPos: IPoint;
     path: EMovingDirection[];
 }
 
@@ -17,11 +19,13 @@ export const moveBallSlice = createSlice({
     initialState,
     reducers: {
         setMovingBall(state: IMoveBallState, action: PayloadAction<ISetMovingBallPayload>) {
-            state.ballPos = action.payload.ballPos;
+            state.startPos = action.payload.ballPos;
+            state.endPos = action.payload.endPos;
             state.path = action.payload.path;
         },
         reset(state: IMoveBallState) {
-            state.ballPos = null;
+            state.startPos = null;
+            state.endPos = null;
         },
     },
 });
