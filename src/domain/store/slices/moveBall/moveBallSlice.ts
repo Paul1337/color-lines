@@ -20,6 +20,9 @@ export const moveBallSlice = createSlice({
             state.ballPos = action.payload.ballPos;
             state.path = action.payload.path;
         },
+        reset(state: IMoveBallState) {
+            state.ballPos = null;
+        },
     },
 });
 

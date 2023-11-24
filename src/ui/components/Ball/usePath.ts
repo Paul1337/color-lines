@@ -14,7 +14,9 @@ export const usePath = (path: Array<EMovingDirection>, ballRef: TBallRef, params
 
     const stageAnimation = () => {
         if (stage === path.length) {
-            params.onPositionUpdate?.();
+            if (stage !== 0) {
+                params.onPositionUpdate?.();
+            }
             return;
         } else {
             animate(path[stage], params.movingDelta);

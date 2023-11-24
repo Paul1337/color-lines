@@ -2,9 +2,10 @@ import styles from './Cell.module.css';
 import Ball from '../Ball/Ball';
 import { CSSProperties, FC } from 'react';
 import { config } from './config';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../domain/store/store';
 import { comparePoints } from '../../../lib/comparePoints';
+import { moveBallActions } from '../../../domain/store/slices/moveBall/moveBallSlice';
 
 interface ICellProps {
     ballType?: number | null;
@@ -16,6 +17,11 @@ interface ICellProps {
 
 const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size }) => {
     const movingBallData = useSelector((state: RootState) => state.moveBall);
+    const dispatch = useDispatch();
+
+    const handleBallPositionUpdate = () => {
+        dispatch(moveBallActions.reset());
+    };
 
     const [x, y] = position;
 
@@ -37,6 +43,7 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size })
         <div style={style} className={styles.cell} onClick={() => onClick?.()}>
             {ballType != undefined && (
                 <Ball
+                    onPositionUpdate={handleBallPositionUpdate}
                     path={comparePoints(movingBallData.ballPos, { x, y }) ? movingBallData.path : []}
                     movingDelta={size + 4}
                     size={size * config.kBallSize}

@@ -31,17 +31,18 @@ export const buildPath = (startPos: IPoint, endPos: IPoint, matrix: TMatrix): TB
         );
     };
 
-    const getMovingInfo = (point: IPoint) => {
+    const getAvailableDirections = (point: IPoint) => {
         const canMoveUp = canMoveBallTo(getUpPoint(point));
         const canMoveRight = canMoveBallTo(getRightPoint(point));
         const canMoveDown = canMoveBallTo(getBottomPoint(point));
         const canMoveLeft = canMoveBallTo(getLeftPoint(point));
-        return {
-            canMoveUp,
-            canMoveRight,
-            canMoveDown,
-            canMoveLeft,
-        };
+
+        return [
+            canMoveUp && EMovingDirection.Up,
+            canMoveRight && EMovingDirection.Right,
+            canMoveDown && EMovingDirection.Down,
+            canMoveLeft && EMovingDirection.Left,
+        ].filter(Boolean) as EMovingDirection[];
     };
 
     let currentPos = { ...startPos } as IPoint;
@@ -49,22 +50,33 @@ export const buildPath = (startPos: IPoint, endPos: IPoint, matrix: TMatrix): TB
 
     let allIterated = false;
     while (!allIterated) {
-        const { canMoveUp, canMoveRight, canMoveDown, canMoveLeft } = getMovingInfo(currentPos);
+        if (comparePoints(currentPos, endPos)) break;
 
-        if (comparePoints(currentPos, endPos)) {
-            break;
-        }
+        const availableDirections = getAvailableDirections(currentPos);
+        const priorDirs: EMovingDirection[] = getPriorDirs(currentPos, endPos);
 
         const prevPos = { ...currentPos } as IPoint;
 
-        if (canMoveUp) {
-            currentPos.y -= 1;
-        } else if (canMoveRight) {
-            currentPos.x += 1;
-        } else if (canMoveDown) {
-            currentPos.y += 1;
-        } else if (canMoveLeft) {
-            currentPos.x -= 1;
+        let didMove = false;
+        for (const dir of priorDirs) {
+            if (availableDirections.includes(dir)) {
+                movePoint(currentPos, dir);
+                didMove = true;
+                break;
+            }
+        }
+
+        if (!didMove) {
+            for (const dir of availableDirections) {
+                movePoint(currentPos, dir);
+                didMove = true;
+                break;
+            }
+        }
+
+        if (didMove) {
+            visitedMatrix[currentPos.y][currentPos.x] = true;
+            dirMatrix[currentPos.y][currentPos.x] = prevPos;
         } else {
             const backDir = dirMatrix[currentPos.y][currentPos.x];
             if (backDir === null) {
@@ -72,12 +84,6 @@ export const buildPath = (startPos: IPoint, endPos: IPoint, matrix: TMatrix): TB
             } else {
                 currentPos = backDir;
             }
-        }
-
-        const canMove = canMoveUp || canMoveDown || canMoveRight || canMoveLeft;
-        if (canMove) {
-            visitedMatrix[currentPos.y][currentPos.x] = true;
-            dirMatrix[currentPos.y][currentPos.x] = prevPos;
         }
     }
     // console.log(dirMatrix);
@@ -97,4 +103,31 @@ export const buildPath = (startPos: IPoint, endPos: IPoint, matrix: TMatrix): TB
     }
 
     return path.reverse();
+};
+
+const getPriorDirs = (currentPos: IPoint, endPos: IPoint) => {
+    const dirs: EMovingDirection[] = [];
+    if (endPos.x > currentPos.x) {
+        dirs.push(EMovingDirection.Right);
+    } else if (endPos.x < currentPos.x) {
+        dirs.push(EMovingDirection.Left);
+    }
+    if (endPos.y > currentPos.y) {
+        dirs.push(EMovingDirection.Down);
+    } else if (endPos.y < currentPos.y) {
+        dirs.push(EMovingDirection.Up);
+    }
+    return dirs;
+};
+
+const movePoint = (point: IPoint, dir: EMovingDirection) => {
+    if (dir === EMovingDirection.Left) {
+        point.x -= 1;
+    } else if (dir === EMovingDirection.Up) {
+        point.y -= 1;
+    } else if (dir === EMovingDirection.Right) {
+        point.x += 1;
+    } else if (dir === EMovingDirection.Down) {
+        point.y += 1;
+    }
 };
