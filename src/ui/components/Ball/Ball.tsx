@@ -1,7 +1,6 @@
 import { CSSProperties, FC, useEffect, useRef } from 'react';
 import styles from './Ball.module.css';
 import classNames from 'classnames';
-import { usePath } from './usePath';
 import { useAnimation } from './useAnimation';
 
 export enum EMovingDirection {
@@ -11,12 +10,12 @@ export enum EMovingDirection {
     Up,
     Down,
 }
-interface IBallProps {
+export interface IBallProps {
     type: number;
-    path?: Array<EMovingDirection>;
     size: number;
     movingDelta: number;
-    onPositionUpdate?: () => void;
+    onPositionUpdate: () => void;
+    direction: EMovingDirection | null;
 }
 
 const mapBallTypeToClass = new Map<number, string>([
@@ -27,17 +26,21 @@ const mapBallTypeToClass = new Map<number, string>([
     [4, 'orange'],
 ]);
 
-const Ball: FC<IBallProps> = ({ size, movingDelta, type, path = [], onPositionUpdate }) => {
+const Ball: FC<IBallProps> = ({ size, movingDelta, type, direction, onPositionUpdate }) => {
     const ballRef = useRef<HTMLDivElement | null>(null);
-    usePath(path, ballRef, {
-        movingDelta,
-        onPositionUpdate,
-    });
+    const animate = useAnimation(ballRef);
     const typeClass = mapBallTypeToClass.get(type) as string;
     const JSstyles: CSSProperties = {
         width: size + 'px',
         height: size + 'px',
     };
+
+    useEffect(() => {
+        if (direction !== null) {
+            animate(direction, movingDelta, onPositionUpdate);
+        }
+    }, [direction]);
+
     return (
         <div style={JSstyles} ref={ballRef} className={classNames(styles.ball, styles[typeClass])}></div>
     );

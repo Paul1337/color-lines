@@ -27,6 +27,12 @@ export const moveBallSlice = createSlice({
             state.startPos = null;
             state.endPos = null;
         },
+        setStartPos(state: IMoveBallState, action: PayloadAction<IPoint>) {
+            state.startPos = action.payload;
+        },
+        setPath(state: IMoveBallState, action: PayloadAction<EMovingDirection[]>) {
+            state.path = action.payload;
+        },
     },
 });
 

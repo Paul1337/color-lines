@@ -7,7 +7,7 @@ export type TBallRef = ReturnType<typeof useRef<HTMLDivElement | null>>;
 export const useAnimation = (ballRef: TBallRef) => {
     const [sumDx, setSumDx] = useState<number>(0);
     const [sumDy, setSumDy] = useState<number>(0);
-    return (movingDirection: EMovingDirection, movingDelta: number) => {
+    return (movingDirection: EMovingDirection, movingDelta: number, onFinish: () => void) => {
         if (movingDirection !== EMovingDirection.None) {
             const goingLeft = movingDirection === EMovingDirection.Left;
             const goingRight = movingDirection === EMovingDirection.Right;
@@ -31,6 +31,8 @@ export const useAnimation = (ballRef: TBallRef) => {
             });
             setSumDx((prevDx) => prevDx + dx);
             setSumDy((prevDy) => prevDy + dy);
+
+            setTimeout(onFinish, config.animationTime);
         }
     };
 };

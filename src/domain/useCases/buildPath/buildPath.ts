@@ -2,6 +2,7 @@ import { comparePoints } from '../../../lib/comparePoints';
 import { EMovingDirection } from '../../../ui/components/Ball/Ball';
 import { getDirectionBetweenPoints } from '../../lib/getDirectionBetweenPoints';
 import { getBottomPoint, getLeftPoint, getRightPoint, getUpPoint } from '../../lib/getNeighborPoint';
+import { movePoint } from '../../lib/movePoint';
 import { TMatrix } from '../../store/slices/field/model';
 import { IPoint } from '../../store/slices/moveBall/model';
 
@@ -118,16 +119,4 @@ const getPriorDirs = (currentPos: IPoint, endPos: IPoint) => {
         dirs.push(EMovingDirection.Up);
     }
     return dirs;
-};
-
-const movePoint = (point: IPoint, dir: EMovingDirection) => {
-    if (dir === EMovingDirection.Left) {
-        point.x -= 1;
-    } else if (dir === EMovingDirection.Up) {
-        point.y -= 1;
-    } else if (dir === EMovingDirection.Right) {
-        point.x += 1;
-    } else if (dir === EMovingDirection.Down) {
-        point.y += 1;
-    }
 };
