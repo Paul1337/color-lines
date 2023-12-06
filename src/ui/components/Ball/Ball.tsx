@@ -1,7 +1,7 @@
 import { CSSProperties, FC, useEffect, useRef } from 'react';
 import styles from './Ball.module.css';
 import classNames from 'classnames';
-import { useAnimation } from './useAnimation';
+import { animateAppearance, animateDisappearance, useMovingAnimation } from './useAnimation';
 
 export enum EMovingDirection {
     None,
@@ -16,6 +16,8 @@ export interface IBallProps {
     movingDelta: number;
     onPositionUpdate: () => void;
     direction: EMovingDirection | null;
+    appear: boolean;
+    disappear: boolean;
 }
 
 const mapBallTypeToClass = new Map<number, string>([
@@ -26,9 +28,17 @@ const mapBallTypeToClass = new Map<number, string>([
     [4, 'orange'],
 ]);
 
-const Ball: FC<IBallProps> = ({ size, movingDelta, type, direction, onPositionUpdate }) => {
+const Ball: FC<IBallProps> = ({
+    size,
+    movingDelta,
+    type,
+    direction,
+    onPositionUpdate,
+    appear,
+    disappear,
+}) => {
     const ballRef = useRef<HTMLDivElement | null>(null);
-    const animate = useAnimation(ballRef);
+    const animate = useMovingAnimation(ballRef);
     const typeClass = mapBallTypeToClass.get(type) as string;
     const JSstyles: CSSProperties = {
         width: size + 'px',
@@ -40,6 +50,18 @@ const Ball: FC<IBallProps> = ({ size, movingDelta, type, direction, onPositionUp
             animate(direction, movingDelta, onPositionUpdate);
         }
     }, [direction]);
+
+    useEffect(() => {
+        if (appear) {
+            animateAppearance(ballRef, { size });
+        }
+    }, [appear]);
+
+    useEffect(() => {
+        if (disappear) {
+            animateDisappearance(ballRef, { size });
+        }
+    }, [disappear]);
 
     return (
         <div style={JSstyles} ref={ballRef} className={classNames(styles.ball, styles[typeClass])}></div>

@@ -5,7 +5,7 @@ import './App.css';
 const App = () => {
     return (
         <div className='App'>
-            <Panel points={0} />
+            <Panel />
             <Field />
         </div>
     );

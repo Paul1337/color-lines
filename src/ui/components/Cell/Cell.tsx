@@ -3,7 +3,7 @@ import Ball, { EMovingDirection } from '../Ball/Ball';
 import { CSSProperties, FC } from 'react';
 import { config } from './config';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../domain/store/store';
+import { RootState, useAppDispatch } from '../../../domain/store/store';
 import { comparePoints } from '../../../lib/comparePoints';
 import { moveBallActions } from '../../../domain/store/slices/moveBall/moveBallSlice';
 import { fieldActions } from '../../../domain/store/slices/field/fieldSlice';
@@ -11,6 +11,7 @@ import { IPoint } from '../../../domain/store/slices/moveBall/model';
 import { movePoint } from '../../../domain/lib/movePoint';
 import { AnimatingBall } from '../Ball/AnimatingBall';
 import { StaticBall } from '../Ball/StaticBall';
+import { thunkDeleteSimilarBalls } from '../../../domain/store/services/deleteSimilarBalls';
 
 interface ICellProps {
     ballType?: number | null;
@@ -21,8 +22,10 @@ interface ICellProps {
 }
 
 const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size }) => {
+    const newBalls = useSelector((state: RootState) => state.field.newBalls);
     const movingBallData = useSelector((state: RootState) => state.moveBall);
-    const dispatch = useDispatch();
+    const deletedBalls = useSelector((state: RootState) => state.field.deletedBalls);
+    const dispatch = useAppDispatch();
 
     const [x, y] = position;
 
@@ -43,6 +46,7 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size })
             console.log('reset');
             dispatch(fieldActions.addMatrixBalls());
             dispatch(moveBallActions.reset());
+            dispatch(thunkDeleteSimilarBalls());
         }
 
         dispatch(moveBallActions.setPath(movingBallData.path.slice(1)));
@@ -73,6 +77,8 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size })
             {ballType !== null &&
                 (ballDirection ? (
                     <AnimatingBall
+                        appear={false}
+                        disappear={false}
                         direction={ballDirection}
                         onPositionUpdate={handleBallPositionUpdate}
                         movingDelta={size + 4}
@@ -81,6 +87,8 @@ const Cell: FC<ICellProps> = ({ ballType, position, isSelected, onClick, size })
                     />
                 ) : (
                     <StaticBall
+                        disappear={deletedBalls.some((point) => comparePoints(point, { x, y }))}
+                        appear={newBalls.some((point) => comparePoints(point, { x, y }))}
                         onPositionUpdate={handleBallPositionUpdate}
                         movingDelta={size + 4}
                         size={size * config.kBallSize}

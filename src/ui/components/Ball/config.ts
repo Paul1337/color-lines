@@ -1,3 +1,5 @@
 export const config = {
-    animationTime: 200,
+    movingAnimationTime: 100,
+    appearingBallAnimationTime: 200,
+    disappearingBallAnimationTime: 200,
 };

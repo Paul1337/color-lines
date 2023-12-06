@@ -1,15 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BallTypesCount, deleteCount, NewBallsCount } from '../../../config/config';
 import { buildStartMatrix } from '../../../useCases/buildStartMatrix/buildStartMatrix';
-import { IFieldState } from './model';
 import { IPoint } from '../moveBall/model';
-import { BallTypesCount, Dimention, NewBallsCount } from '../../../config/config';
-import { EMovingDirection } from '../../../../ui/components/Ball/Ball';
-import { movePoint } from '../../../lib/movePoint';
+import { IFieldState, TMatrix } from './model';
 
 const initialState: IFieldState = {
     matrix: buildStartMatrix(),
+    newBalls: [],
+    deletedBalls: [],
     selected: null,
 };
+
+export enum ECheckingDirections {
+    None,
+    Right,
+    Left,
+    Top,
+    Bottom,
+    RightTop,
+    RightBottom,
+    LeftTop,
+    LeftBottom,
+}
 
 export const fieldSlice = createSlice({
     name: 'field',
@@ -18,6 +30,7 @@ export const fieldSlice = createSlice({
         resetMatrix(state: IFieldState) {
             state.matrix = buildStartMatrix();
             state.selected = null;
+            state.newBalls = [];
         },
         setSelected(state: IFieldState, action: PayloadAction<IPoint>) {
             state.selected = action.payload;
@@ -47,14 +60,83 @@ export const fieldSlice = createSlice({
             }
 
             let cnt = 0;
+            state.newBalls = [];
             for (let i = 0; i < state.matrix.length; i++) {
                 for (let j = 0; j < state.matrix[i].length; j++) {
                     const cell = state.matrix[i][j];
                     if (cell === null) {
                         if (balls[cnt]) {
                             state.matrix[i][j] = Math.floor(Math.random() * BallTypesCount);
+                            state.newBalls.push({
+                                x: j,
+                                y: i,
+                            });
                         }
                         cnt++;
+                    }
+                }
+            }
+        },
+        deleteSimBalls(state: IFieldState) {
+            state.deletedBalls = [];
+            for (let y = 0; y < state.matrix.length; y++) {
+                for (let x = 0; x < state.matrix[y].length; x++) {
+                    let currentBallType = state.matrix[y][x];
+
+                    if (currentBallType !== null) {
+                        if (currentBallType !== state.matrix[y][x - 1]) {
+                            const checkingRight = checkDir(
+                                { y, x },
+                                ECheckingDirections.Right,
+                                state.matrix
+                            );
+                            if (checkingRight >= deleteCount) {
+                                for (let g = 0; g < checkingRight; g++) {
+                                    state.deletedBalls.push({ x: x + g, y });
+                                    state.matrix[y][x + g] = null;
+                                }
+                            }
+                        }
+
+                        if (currentBallType !== state.matrix[y - 1]?.[x]) {
+                            const checkingBottom = checkDir(
+                                { y, x },
+                                ECheckingDirections.Bottom,
+                                state.matrix
+                            );
+                            if (checkingBottom >= deleteCount) {
+                                for (let g = 0; g < checkingBottom; g++) {
+                                    state.deletedBalls.push({ x, y: y + g });
+                                    state.matrix[y + g][x] = null;
+                                }
+                            }
+                        }
+                        if (currentBallType !== state.matrix[y + 1]?.[x - 1]) {
+                            const checkingRightTop = checkDir(
+                                { y, x },
+                                ECheckingDirections.RightTop,
+                                state.matrix
+                            );
+                            if (checkingRightTop >= deleteCount) {
+                                for (let g = 0; g < checkingRightTop; g++) {
+                                    state.deletedBalls.push({ x: x + g, y: y - g });
+                                    state.matrix[y - g][x + g] = null;
+                                }
+                            }
+                        }
+                        if (currentBallType !== state.matrix[y - 1]?.[x - 1]) {
+                            const checkingRightBottom = checkDir(
+                                { y, x },
+                                ECheckingDirections.RightBottom,
+                                state.matrix
+                            );
+                            if (checkingRightBottom >= deleteCount) {
+                                for (let g = 0; g < checkingRightBottom; g++) {
+                                    state.deletedBalls.push({ x: x + g, y: y + g });
+                                    state.matrix[y + g][x + g] = null;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -64,3 +146,31 @@ export const fieldSlice = createSlice({
 
 export const { actions: fieldActions } = fieldSlice;
 export const { reducer: fieldReducer } = fieldSlice;
+
+const checkDir = ({ y, x }: IPoint, direction: ECheckingDirections, matrix: TMatrix) => {
+    let currentBallType = matrix[y][x];
+    let i = 0;
+
+    if (direction === ECheckingDirections.RightTop) {
+        while (currentBallType === matrix[y - i]?.[x + i]) {
+            i++;
+        }
+    }
+    if (direction === ECheckingDirections.RightBottom) {
+        while (currentBallType === matrix[y + i]?.[x + i]) {
+            i++;
+        }
+    }
+    if (direction === ECheckingDirections.Right) {
+        while (currentBallType === matrix[y]?.[x + i]) {
+            i++;
+        }
+    }
+    if (direction === ECheckingDirections.Bottom) {
+        while (currentBallType === matrix[y + i]?.[x]) {
+            i++;
+        }
+    }
+
+    return i;
+};
