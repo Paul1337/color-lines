@@ -7,4 +7,5 @@ export interface IFieldState {
     newBalls: IPoint[];
     deletedBalls: IPoint[];
     selected: IPoint | null;
+    endGame: boolean;
 }

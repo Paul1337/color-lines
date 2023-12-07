@@ -9,6 +9,7 @@ const initialState: IFieldState = {
     newBalls: [],
     deletedBalls: [],
     selected: null,
+    endGame: false,
 };
 
 export enum ECheckingDirections {
@@ -31,6 +32,7 @@ export const fieldSlice = createSlice({
             state.matrix = buildStartMatrix();
             state.selected = null;
             state.newBalls = [];
+            state.endGame = false;
         },
         setSelected(state: IFieldState, action: PayloadAction<IPoint>) {
             state.selected = action.payload;
@@ -49,6 +51,11 @@ export const fieldSlice = createSlice({
                     }
                 }
             }
+
+            if (emptyCells <= NewBallsCount) {
+                state.endGame = true;
+            }
+
             const balls: boolean[] = new Array(emptyCells).fill(false);
             for (let i = 0; i < Math.min(NewBallsCount, emptyCells); i++) balls[i] = true;
 

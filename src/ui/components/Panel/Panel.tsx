@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fieldActions } from '../../../domain/store/slices/field/fieldSlice';
+import { fieldActions, fieldSlice } from '../../../domain/store/slices/field/fieldSlice';
 import styles from './Panel.module.css';
 import { RootState } from '../../../domain/store/store';
 
