@@ -1,36 +1,45 @@
 .panel {
-    border-radius: 15px;
-    border: 3px solid #5b6b81;
-    background-color: #e4eaf2;
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
-    padding: 30px;
-    margin: 10px auto;
-    /* width: 100%; */
+	border-radius: 15px;
+	border: 3px solid #5b6b81;
+	background-color: #e4eaf2;
+	display: flex;
+	align-content: center;
+	justify-content: space-between;
+	padding: 30px;
+	margin: 10px auto;
+	min-width: 60%;
+	/* width: 100%; */
 }
 .scoreCont {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 .scoreCont span {
-    font-size: 20px;
+	font: var(--font-m);
 }
 .pointsLabel {
-    margin-right: 5px;
+	margin-right: 5px;
 }
 .pointsCount {
-    font-weight: bold;
+	font: var(--font-m);
 }
 .restartBtn {
-    margin-left: 10px;
-    font-size: 15px;
-    background-color: #f2ede4;
-    padding: 5px;
-    border: 3px solid #5b6b81;
-    border-radius: 10px;
-    cursor: pointer;
+	margin-left: 10px;
+	font-size: 20px;
+	background-color: #f2ede4;
+	padding: 5px;
+	border: 3px solid #5b6b81;
+	border-radius: 10px;
+	cursor: pointer;
+	font: var(--font-m);
 }
 .restartBtn:hover {
-    background-color: #ffffff;
+	background-color: #ffffff;
+}
+.settingsImg {
+	cursor: pointer;
+	opacity: 1;
+}
+.settingsImg:hover {
+	opacity: 0.6;
 }

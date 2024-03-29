@@ -1,12 +1,12 @@
 .cell {
-    border: 1px solid black;
-    padding: 1px;
-    cursor: pointer;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    background: #f2ede4;
+	border: 1px solid var(--main-border-color);
+	padding: 1px;
+	cursor: pointer;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	background: var(--main-color);
 }
 .cell:hover {
-    background-color: #ffffff;
+	background-color: #ffffff;
 }

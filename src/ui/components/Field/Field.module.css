@@ -1,9 +1,21 @@
 .field {
-    margin: 10px auto;
-    padding: 30px;
-    border-radius: 15px;
-    border: 3px solid #5b6b81;
-    background-color: #e4eaf2;
-    display: inline-grid;
-    justify-content: center;
+	margin: 10px auto;
+	padding: 30px;
+	border-radius: 15px;
+	border: 3px solid var(--main-border-color);
+	background-color: var(--main-bg-color);
+	display: inline-grid;
+	justify-content: center;
+}
+
+/* @media (max-width: 500px) {
+	.field {
+		padding: 15px;
+	}
+} */
+
+@media (max-width: 500px) {
+	.field {
+		padding: 5px;
+	}
 }

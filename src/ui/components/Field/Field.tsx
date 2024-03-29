@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Cell from '../Cell/Cell';
 import styles from './Field.module.css';
 import { config } from './config';
@@ -13,46 +13,53 @@ import { comparePoints } from '../../../lib/comparePoints';
 interface IFieldProps {}
 
 const Field: FC<IFieldProps> = (props) => {
-    const { matrix, selected } = useSelector((state: RootState) => state.field);
-    const moveBallData = useSelector((state: RootState) => state.moveBall);
-    const dispatch = useDispatch();
+	const { matrix, selected } = useSelector((state: RootState) => state.field);
+	const moveBallData = useSelector((state: RootState) => state.moveBall);
+	const dispatch = useDispatch();
 
-    const handleCellClick = (point: IPoint) => {
-        if (matrix[point.y][point.x] !== null) {
-            dispatch(fieldActions.setSelected(point));
-        } else {
-            if (selected && moveBallData.startPos === null) {
-                const path = buildPath(selected, point, matrix);
-                console.log(path);
-                if (path) {
-                    dispatch(
-                        moveBallActions.setMovingBall({
-                            ballPos: selected,
-                            endPos: point,
-                            path,
-                        })
-                    );
-                }
-            }
-        }
-    };
+	const handleCellClick = (point: IPoint) => {
+		if (matrix[point.y][point.x] !== null) {
+			dispatch(fieldActions.setSelected(point));
+		} else {
+			if (selected && moveBallData.startPos === null) {
+				const path = buildPath(selected, point, matrix);
+				console.log(path);
+				if (path) {
+					dispatch(
+						moveBallActions.setMovingBall({
+							ballPos: selected,
+							endPos: point,
+							path,
+						})
+					);
+				}
+			}
+		}
+	};
 
-    return (
-        <div className={styles.field}>
-            {matrix.map((row, y) =>
-                row.map((el, x) => (
-                    <Cell
-                        size={config.cellSize}
-                        onClick={() => handleCellClick({ x, y })}
-                        isSelected={comparePoints(selected, { x, y })}
-                        key={y * row.length + x}
-                        ballType={el}
-                        position={[x, y]}
-                    />
-                ))
-            )}
-        </div>
-    );
+	const [cellSize, setCellSize] = useState(Math.min(window.innerWidth * 0.08, config.maxCellSize));
+	useEffect(() => {
+		window.addEventListener('resize', (e) => {
+			setCellSize(Math.min(window.innerWidth * 0.08, config.maxCellSize));
+		});
+	}, []);
+
+	return (
+		<div className={styles.field}>
+			{matrix.map((row, y) =>
+				row.map((el, x) => (
+					<Cell
+						size={cellSize}
+						onClick={() => handleCellClick({ x, y })}
+						isSelected={comparePoints(selected, { x, y })}
+						key={y * row.length + x}
+						ballType={el}
+						position={[x, y]}
+					/>
+				))
+			)}
+		</div>
+	);
 };
 
 export default Field;

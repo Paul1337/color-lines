@@ -1,3 +1,3 @@
 export const config = {
-    cellSize: 50,
+	maxCellSize: 70,
 };

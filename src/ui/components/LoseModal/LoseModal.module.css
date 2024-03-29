@@ -1,22 +1,22 @@
 .div {
-    /* align-items: center;
+	/* align-items: center;
     display: flex;
     justify-content: center; */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: 1;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 1;
 }
 .text {
-    background-color: #f8f4ee;
-    padding: 50px;
-    border: 1px solid black;
-    box-shadow: 3px 3px black;
-    position: relative;
-    transform: translate(-50%, -50%);
-    color: red;
-    font-size: 130px;
-    font-family: "Oswald", sans-serif;
-    font-weight: bold;
-    text-shadow: 3px 3px black;
+	background-color: var(--main-color);
+	padding: 50px;
+	border: 1px solid black;
+	box-shadow: 3px 3px black;
+	position: relative;
+	transform: translate(-50%, -50%);
+	color: red;
+
+	font: var(--font-l);
+	font-weight: bold;
+	text-shadow: 3px 3px black;
 }

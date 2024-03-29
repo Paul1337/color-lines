@@ -1,20 +1,20 @@
 .ball {
-    border: 1px solid #5b6b81;
-    border-radius: 50%;
-    box-sizing: border-box;
+	border: 1px solid var(--main-border-color);
+	border-radius: 50%;
+	box-sizing: border-box;
 }
 .red {
-    background-color: #c74246;
+	background-color: #c74246;
 }
 .green {
-    background-color: #9ec8a4;
+	background-color: #9ec8a4;
 }
 .yellow {
-    background-color: #f2e9ac;
+	background-color: #f2e9ac;
 }
 .blue {
-    background-color: #88c1f2;
+	background-color: #88c1f2;
 }
 .orange {
-    background-color: #d97904;
+	background-color: #d97904;
 }
